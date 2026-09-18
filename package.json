@@ -1,0 +1,73 @@
+{
+  "name": "dsh-lantern",
+  "version": "0.1.1",
+  "description": "LANtern（局域网模型灯塔）：把本机 DeepSeek Harness 已注册的全部 AI 模型，以 OpenAI / Anthropic 兼容接口照亮给同一局域网。只读复用 DSH 的模型注册表，全部产物写在插件自己的 data/ 目录内。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-connection"
+      ],
+      "immediately": true
+    },
+    "catalog": {
+      "category": "integration",
+      "summary": {
+        "en": "Expose every model registered in your local DeepSeek Harness to the LAN over OpenAI- and Anthropic-compatible endpoints, with API keys, rate limits, capability gating and usage stats.",
+        "zh": "把本机 DeepSeek Harness 的全部模型，以 OpenAI / Anthropic 兼容接口开放给同一局域网；自带 API Key、限流、能力闸门与用量统计。"
+      },
+      "capabilities": []
+    }
+  },
+  "files": [
+    "lib/",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "lan",
+    "openai-compatible",
+    "anthropic-compatible",
+    "llm-gateway",
+    "local-network",
+    "self-hosted",
+    "proxy"
+  ],
+  "dependencies": {
+    "@deepseek-ai/dsh-llm": "^0.1.5-rc.2"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": ">=4.0.1 <5"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saretheya/dsh-lantern.git"
+  },
+  "homepage": "https://github.com/Saretheya/dsh-lantern#readme",
+  "bugs": {
+    "url": "https://github.com/Saretheya/dsh-lantern/issues"
+  }
+}
