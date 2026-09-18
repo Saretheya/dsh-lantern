@@ -1,0 +1,15 @@
+# dsh-lantern 的 bundle 装配层（LANtern / 局域网模型灯塔）。
+#
+# [本机自制] id 前缀 custom-，与 custom-thinking-language / custom-skill-manager /
+# custom-settings-nav-order 的约定一致；对外发布版去掉 custom-（见设计方案 §0.1）。
+#
+# 为什么用 bundle 自带 patch 而不是在 profile 的 cordis.patch.yml 里手写 insert 行：
+#   profile 里手写的 insert 行 **不会被 `dsh plugin remove` 清理**（dsh 只改
+#   package.json 的 dsh.profile.bundles，从不改写 cordis.patch.yml）。
+#   于是"卸载插件但漏删那一行"会让 DSH 启动时 import 一个已不存在的包，
+#   直接 ERR_MODULE_NOT_FOUND、整个 profile 加载失败、Web UI 起不来（已实测）。
+#   改用 bundle 装配后：`dsh plugin remove` 会把本包移出 bundles，
+#   本文件随之不再被加载 —— 卸载即一条命令，不留悬空行。
+- insert:
+    - id: lantern
+      name: 'dsh-lantern'
