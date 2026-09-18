@@ -1,0 +1,13 @@
+# Runtime state written by the installed plugin. Never commit it.
+data/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Package managers
+node_modules/
+*.tgz
