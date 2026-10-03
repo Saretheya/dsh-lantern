@@ -371,3 +371,5 @@ installation rejected: Plugin dsh-lantern@0.1.x is incompatible with dsh 0.2.0-r
 ## 许可证
 
 [MIT](LICENSE)
+
+Copyright (c) 2026 Saretheya · MIT License

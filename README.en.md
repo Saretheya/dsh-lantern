@@ -399,3 +399,5 @@ The two explicit prerelease branches cover 0.1.5 and 0.2.x respectively (`<0.3.0
 ## License
 
 [MIT](LICENSE)
+
+Copyright (c) 2026 Saretheya · MIT License

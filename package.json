@@ -1,6 +1,6 @@
 {
   "name": "dsh-lantern",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "LANtern（局域网模型灯塔）：把本机 DeepSeek Harness 已注册的全部 AI 模型，以 OpenAI / Anthropic 兼容接口照亮给同一局域网。只读复用 DSH 的模型注册表，全部产物写在插件自己的 data/ 目录内。",
   "type": "module",
   "main": "lib/index.js",
@@ -60,6 +60,7 @@
     "node": "^22.19.0 || >=24.0.0"
   },
   "license": "MIT",
+  "author": "Saretheya",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Saretheya/dsh-lantern.git"
