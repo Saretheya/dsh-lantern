@@ -8,7 +8,7 @@
 
 [![platform-web](https://img.shields.io/badge/platform-web-blue)](#installation)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![dsh](https://img.shields.io/badge/DSH-0.1.5--rc.2-blue)](#compatibility)
+[![dsh](https://img.shields.io/badge/DSH-0.1.5%20%7C%200.2.0-blue)](#compatible-dsh-versions)
 
 </div>
 
@@ -67,6 +67,9 @@ dsh --profile web
 
 > A newly added bundle is **not** hot-applied to a running process — a **restart is required**.
 > After restarting, **refresh the browser page**.
+>
+> Requires DSH `0.1.5-rc.2` or newer — **both 0.1.5 and 0.2.0 are tested**, see
+> "Compatible DSH versions" below.
 
 ### 3. Open the settings panel
 
@@ -340,14 +343,56 @@ as a "normally finished, empty answer".
 
 ---
 
+## Compatible DSH versions
+
+**One and the same codebase supports both DSH 0.1.5 and 0.2.0** — both are tested (see the table below).
+
+| | 0.1.5 | 0.2.0 |
+|---|---|---|
+| Plugin installs | ✅ | ✅ |
+| Boots and forwards requests | ✅ | ✅ |
+| LANtern entry in the settings panel | ✅ | ✅ |
+
+**Every API this plugin uses is unchanged between the two**: `ctx.llm.stream` / `listModels` /
+`listProviders` / `resolveModelInfo`, `connection.fetch.register`, `ctx.slots.inject` /
+`slots.register`, the `createUserMessage`-family factories, and `webServer.register` (its route
+fields `path` / `methods` / `requestBody` / `fetch` are identical).
+
+> **About the 0.2.0 slot changes**: since 0.1.7, DSH's slot system **adds** Component Factories
+> (`registerFactory` / `renderFactorySlot`, 18 new types) and **removes or changes nothing** in the
+> ordinary Slot contract — `SlotScope` (`root` / `session-maybe` / `session`) is character-for-character
+> unchanged. This plugin uses ordinary Slots, so **no adaptation was needed**.
+
+### Why the peer range is an interval instead of `^0.1.5-rc.2`
+
+DSH checks at install time whether a plugin's `@deepseek-ai/dsh-llm` peer range matches its own
+runtime version, and **refuses to install** when it does not:
+
+```
+installation rejected: Plugin dsh-lantern@0.1.x is incompatible with dsh 0.2.0-rc.2:
+  peerDependencies {"@deepseek-ai/dsh-llm":"^0.1.5-rc.2"}
+```
+
+`^0.1.5-rc.2` admits only `0.1.5.x`, which leaves 0.2.0 users **completely unable to install**. So the
+plugin declares:
+
+```json
+"@deepseek-ai/dsh-llm": ">=0.1.5-rc.2 <0.2.0-0 || >=0.2.0-rc.1 <0.3.0-0"
+```
+
+The two explicit prerelease branches cover 0.1.5 and 0.2.x respectively (`<0.3.0-0` stops a future
+0.3.0 from being admitted by accident).
+
+---
+
 ## Compatibility
 
 | Item | Requirement |
 |---|---|
-| DSH | verified on 0.1.5-rc.2 |
+| DSH | **verified on both 0.1.5-rc.2 and 0.2.0-rc.2** |
 | Platform | web |
 | Node.js | `^22.19.0 \|\| >=24.0.0` |
-| Dependencies | `@deepseek-ai/dsh-llm` (provided by the DSH environment) |
+| Dependencies | `@deepseek-ai/dsh-llm` (provided by the DSH environment; no manual install) |
 
 ---
 

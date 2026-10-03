@@ -8,7 +8,7 @@
 
 [![platform-web](https://img.shields.io/badge/platform-web-blue)](#安装)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![dsh](https://img.shields.io/badge/DSH-0.1.5--rc.2-blue)](#兼容性)
+[![dsh](https://img.shields.io/badge/DSH-0.1.5%20%7C%200.2.0-blue)](#兼容的-dsh-版本)
 
 </div>
 
@@ -63,6 +63,8 @@ dsh --profile web
 ```
 
 > 新增的 bundle 不会热应用到正在运行的进程，**必须重启**；重启后**刷新浏览器页面**。
+>
+> 需要 DSH `0.1.5-rc.2` 以上（**0.1.5 与 0.2.0 均已实测支持**，见下方「兼容的 DSH 版本」）。
 
 ### 3. 打开设置面板
 
@@ -315,14 +317,54 @@ Anthropic 风格用 `x-api-key: <Key>`。
 
 ---
 
+## 兼容的 DSH 版本
+
+本插件**同一份代码同时支持 DSH 0.1.5 与 0.2.0**（两版均已实测，见下表）。
+
+| | 0.1.5 | 0.2.0 |
+|---|---|---|
+| 插件能装上 | ✅ | ✅ |
+| 能启动、能转发 | ✅ | ✅ |
+| 设置面板 LANtern 大项 | ✅ | ✅ |
+
+**插件用到的 API 在两版中都没有变化**：`ctx.llm.stream` / `listModels` / `listProviders` /
+`resolveModelInfo`、`connection.fetch.register`、`ctx.slots.inject` / `slots.register`、
+`createUserMessage` 等工厂函数，以及 `webServer.register`（路由字段 `path` / `methods` /
+`requestBody` / `fetch` 完全一致）。
+
+> **关于 0.2.0 的 slot 变化**：0.2.0（自 0.1.7 起）在 slot 系统里**新增**了
+> Component Factory（`registerFactory` / `renderFactorySlot`，共 18 个新类型），
+> 并**未删除或修改**普通 Slot 的契约 —— `SlotScope`（`root` / `session-maybe` / `session`）
+> 定义逐字未变。本插件用的是普通 Slot，因此**无需适配**。
+
+### 为什么 peer 范围写成一个区间而不是 `^0.1.5-rc.2`
+
+DSH 在安装时会**校验插件的 `@deepseek-ai/dsh-llm` peer 范围是否匹配自身运行时版本**，
+不匹配会直接拒绝安装：
+
+```
+installation rejected: Plugin dsh-lantern@0.1.x is incompatible with dsh 0.2.0-rc.2:
+  peerDependencies {"@deepseek-ai/dsh-llm":"^0.1.5-rc.2"}
+```
+
+`^0.1.5-rc.2` 只放行 `0.1.5.x`，会让 0.2.0 用户**根本装不上**。所以本插件声明为：
+
+```json
+"@deepseek-ai/dsh-llm": ">=0.1.5-rc.2 <0.2.0-0 || >=0.2.0-rc.1 <0.3.0-0"
+```
+
+两个显式预发布分支分别覆盖 0.1.5 与 0.2.x（`<0.3.0-0` 防止将来误放行 0.3.0）。
+
+---
+
 ## 兼容性
 
 | 项目 | 要求 |
 |---|---|
-| DSH | 0.1.5-rc.2 上实测可用 |
+| DSH | **0.1.5-rc.2 与 0.2.0-rc.2 均已实测可用** |
 | 平台 | web |
 | Node.js | `^22.19.0 \|\| >=24.0.0` |
-| 依赖 | `@deepseek-ai/dsh-llm`（由 DSH 环境提供） |
+| 依赖 | `@deepseek-ai/dsh-llm`（由 DSH 环境提供，无需手动安装） |
 
 ---
 
